@@ -17,6 +17,7 @@ clock = pygame.time.Clock()
 
 # variables ===========================================================
 player = Player()
+canFish = False # only true when the player is next to a lake object
 
 # images ==============================================================
 startingScreen = pygame.image.load("startingScreen.png")
@@ -37,8 +38,12 @@ def call(func): # -> params: string func, returns: None
 		store()
 	pass
 
-def fish():
-	
+def fish(stage): # -> params: int stage, returns: int index of fish caught
+	p = math.random()
+	for i in range(len(settings.probabilities[stage])):
+		if (p < settings.probabilities[stage][i]):
+			return i
+	return len(settings.probabilities[stage]) - 1
 
 # Starting Screen/Splash Art
 run = True
@@ -102,8 +107,9 @@ while run:
 	if (keys[pygame.K_d]):
 		player.pos[0] += 5
 
-	if (keys[pygame.K_SPACE]):
-		fish()
+	if (keys[pygame.K_SPACE] and canFish):
+		index = fish(0)
+		player.inventory[settings.fishByStage[0][index]] = [settings.objects[settings.fishByStage[0][index]] # this array contains the descriptor for the object
 	# blit here
 	clock.tick(60)
 
