@@ -25,16 +25,30 @@ sanity = 0 # integer that determines the ending the player receives.
 startingScreen = pygame.image.load("startingScreen.png")
 
 # images end ==========================================================
-
-def store(): # -> params: None, returns: None
-	# we wnat to stop the current thread, and switch to a different thread
-	# simply use a while loop and we're good.
-	pass
-
 def inRect(x, y, rect): # -> params: int x, int y, Rectangle rect, returns: boolean
 	if (x <= rect.right and x >= rect.left and y <= rect.top and y >= rect.bottom):
 		return True
 	return False
+
+def store(): # -> params: None, returns: None
+	# we wnat to stop the current thread, and switch to a different thread
+	# simply use a while loop and we're good.
+	temp = True
+	
+	while temp:
+		for event in pygame.events.get():
+			if (event.type == pygame.MOUSEBUTTONDOWN):
+				p = pygame.mouse.get_pos() # format: [float x, float y] or [int x, int y]
+
+				if (inRect(p[0], p[1], settings.storeRects[1]):
+					temp = False
+		
+		# blit here
+		for i in range(len(settings.storeRects)):
+			r = storeRects[i]
+			pygame.draw.rect(pygame.Rect(r[0], r[1], r[2], r[3]))
+
+		clock.tick(30)
 
 def decision(stage, choice):
 	pass
