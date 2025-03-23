@@ -9,3 +9,4 @@ objects = {"Normal Fish": ["Your average fish.", 2, "Fish", "NONE"],
            "Elongated Fish":["A fish that contains a valuable medicinal ingredient that can be used to cure PNEUMONIA or help treat CORRUPTION.", 10, "Key Fish", "Can be sacrificed."]
 }
 # each array is [string descriptor, value, category, effects]
+storeRects = [[0, 0, WIDTH, HEIGHT], [WIDTH - 50, 0, 50, 50]] # topleft x, y, w, h
