@@ -147,6 +147,9 @@ while run:
 				player.inventory[settings.fishByStage[0][index]] = [settings.objects[settings.fishByStage[0][index]], player.inventory[settings.fishByStage[0][index]][1] + 1]
 			# this array contains the descriptor for the object
 	# blit here
+	items = [player]
+	for i in range(len(settings.scene1Objects)):
+		items.append(settings.scene1Objects[i])
 	clock.tick(60)
 
 # Phase 2/Scene 2
