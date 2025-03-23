@@ -18,7 +18,9 @@ clock = pygame.time.Clock()
 # variables ===========================================================
 player = Player()
 canFish = False # only true when the player is next to a lake object
-
+stage = 0 # the stage of the game at some point
+money = 0
+sanity = 0 # integer that determines the ending the player receives.
 # images ==============================================================
 startingScreen = pygame.image.load("startingScreen.png")
 
@@ -26,6 +28,7 @@ startingScreen = pygame.image.load("startingScreen.png")
 
 def store(): # -> params: None, returns: None
 	# we wnat to stop the current thread, and switch to a different thread
+	# simply use a while loop and we're good.
 	pass
 
 def inRect(x, y, rect): # -> params: int x, int y, Rectangle rect, returns: boolean
@@ -33,9 +36,20 @@ def inRect(x, y, rect): # -> params: int x, int y, Rectangle rect, returns: bool
 		return True
 	return False
 
+def decision(stage, choice):
+	pass
+
 def call(func): # -> params: string func, returns: None
 	if (func == "Store"):
 		store()
+	if (func[0:7] == "Decision"):
+		if (stage == 1):
+			if (func[7:] == "1"):
+				decision(stage, 1)
+			elif (func[7:] == "2"):
+				decision(stage, 2)
+		elif (stage == 2):
+			pass
 	pass
 
 def fish(stage): # -> params: int stage, returns: int index of fish caught
@@ -80,7 +94,10 @@ while run:
 	clock.tick(60)
 	
 # Phase 1/Scene 1
-HUDrects = [] # is composed of arrays in the format: [rect, func]
+HUDrects = [[pygame.Rect(0, 3*settings.HEIGHT/4, settings.WIDTH/10, settings.HEIGHT/4), "Store"]
+
+] # is composed of arrays in the format: [rect, func]
+stage = 1
 
 run = True
 while run:
@@ -109,12 +126,18 @@ while run:
 
 	if (keys[pygame.K_SPACE] and canFish):
 		index = fish(0)
-		player.inventory[settings.fishByStage[0][index]] = [settings.objects[settings.fishByStage[0][index]] # this array contains the descriptor for the object
+		if (player.inventory.get(settings.fishByStage[0][index], 0) == 0):
+			player.inventory[settings.fishByStage[0][index]] = [settings.object[settings.fishByStage[0][index]], 1]
+		else:
+			if (not settings.objects[settings.fishByStage[0][index]][2] == "Key Fish"):
+				player.inventory[settings.fishByStage[0][index]] = [settings.objects[settings.fishByStage[0][index]], player.inventory[settings.fishByStage[0][index]][1] + 1]
+			# this array contains the descriptor for the object
 	# blit here
 	clock.tick(60)
 
 # Phase 2/Scene 2
 HUDrects = []
+stage = 2
 
 run = True
 while run:
