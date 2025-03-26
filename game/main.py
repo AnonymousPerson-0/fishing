@@ -22,6 +22,7 @@ stage = 0 # the stage of the game at some point
 money = 0
 altruism = 0 # float that helps to determine the type of personality the player is and the ending they receive
 sanity = 0 # integer that determines the ending the player receives.
+lakes = []
 # images ==============================================================
 startingScreen = pygame.image.load("startingScreen.png")
 
@@ -52,7 +53,11 @@ def store(): # -> params: None, returns: None
 		clock.tick(30)
 
 def decision(stage, choice):
-	pass
+	
+	if (choice == 1):
+		pass
+	if (choice == 2):
+		pass
 
 def call(func): # -> params: string func, returns: None
 	if (func == "Store"):
@@ -65,6 +70,12 @@ def call(func): # -> params: string func, returns: None
 				decision(stage, 2)
 		elif (stage == 2):
 			pass
+	pass
+
+def displayDialogue(dialogue):
+	pass
+
+def displayChoices(choices): # appends to HUDrects
 	pass
 
 def fish(stage): # -> params: int stage, returns: int index of fish caught
@@ -111,6 +122,11 @@ while run:
 # Phase 1/Scene 1
 HUDrects = [[pygame.Rect(0, 3*settings.HEIGHT/4, settings.WIDTH/10, settings.HEIGHT/4), "Store"]] # is composed of arrays in the format: [rect, func]
 stage = 1
+sceneNum = 0
+
+buildings = []
+
+NPCs = []
 
 run = True
 while run:
@@ -139,19 +155,49 @@ while run:
 		player.pos[1] += 5
 	if (keys[pygame.K_d]):
 		player.pos[0] += 5
+	if (keys[pygame.K_f]):
+		for i in buildings:
+			if (i.checkProximity(player)):
+				# this must mean that you can go in
+				sceneNum = i.sceneNum
+				for i in settings.scenes[0][sceneNum]:
+					if (i[1][0:3] == "NPC"):
+						NPCs.append(npc.NPC(settings.dialogue[i[1][3:]], settings.choices[i[1][3:]], settings.npcpos[i[1][3:]]))
+	if (keys[pygame.K_g]):
+		for i in NPCs:
+			if (i.checkProximity(player)):
+				if (i.dialogueSeen):
+					displayChoices(i.choices)
+				else:
+					# display dialogue
+					displayDialogue(i.dialogue)
+					i.dialogueSeen = True
 
-	if (keys[pygame.K_SPACE] and canFish):
-		index = fish(0)
-		if (player.inventory.get(settings.fishByStage[0][index], 0) == 0):
-			player.inventory[settings.fishByStage[0][index]] = [settings.object[settings.fishByStage[0][index]], 1]
-		else:
-			if (not settings.objects[settings.fishByStage[0][index]][2] == "Key Fish"):
-				player.inventory[settings.fishByStage[0][index]] = [settings.objects[settings.fishByStage[0][index]], player.inventory[settings.fishByStage[0][index]][1] + 1]
-			# this array contains the descriptor for the object
+	# collisions =====================================================
+	
+	# end ============================================================
+
+	if (keys[pygame.K_SPACE]):
+		canFish = False
+		for i in lakes:
+			if (i.checkProximity(player)):
+				canFish = True
+		if (canFish):
+			index = fish(0)
+			if (player.inventory.get(settings.fishByStage[0][index], 0) == 0):
+				player.inventory[settings.fishByStage[0][index]] = [settings.object[settings.fishByStage[0][index]], 1]
+			else:
+				if (not settings.objects[settings.fishByStage[0][index]][2] == "Key Fish"):
+					player.inventory[settings.fishByStage[0][index]] = [settings.objects[settings.fishByStage[0][index]], player.inventory[settings.fishByStage[0][index]][1] + 1]
+				# this array contains the descriptor for the object
 	# blit here
-	items = [player]
-	for i in range(len(settings.scene1Objects)):
-		items.append(settings.scene1Objects[i])
+	items = [[player, "player"]]
+	for i in range(len(settings.scenes[0][sceneNum])):
+		items.append([settings.scenes[0][sceneNum][i][0], settings.scenes[0][sceneNum][i][1]])
+
+	for i in items:
+		screen.blit(settings.objectImages[i][1], i[0])
+		continue 
 	clock.tick(60)
 
 # Phase 2/Scene 2
