@@ -20,6 +20,7 @@ player = Player()
 canFish = False # only true when the player is next to a lake object
 stage = 0 # the stage of the game at some point
 money = 0
+altruism = 0 # float that helps to determine the type of personality the player is and the ending they receive
 sanity = 0 # integer that determines the ending the player receives.
 # images ==============================================================
 startingScreen = pygame.image.load("startingScreen.png")
@@ -108,9 +109,7 @@ while run:
 	clock.tick(60)
 	
 # Phase 1/Scene 1
-HUDrects = [[pygame.Rect(0, 3*settings.HEIGHT/4, settings.WIDTH/10, settings.HEIGHT/4), "Store"]
-
-] # is composed of arrays in the format: [rect, func]
+HUDrects = [[pygame.Rect(0, 3*settings.HEIGHT/4, settings.WIDTH/10, settings.HEIGHT/4), "Store"]] # is composed of arrays in the format: [rect, func]
 stage = 1
 
 run = True
@@ -128,6 +127,9 @@ while run:
 			for i in range(len(HUDrects)):
 				if (inRect(click_pos[0], click_pos[1], HUDrects[i][0])):
 					call(HUDrects[i][1])
+
+					if (HUDrects[i][1][0:7] == "Decision"):
+						run = False # continue to next stage after completing the first decision
 	keys = pygame.key.get_pressed()
 	if (keys[pygame.K_w]):
 		player.pos[1] -= 5
