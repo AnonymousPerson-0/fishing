@@ -1,3 +1,5 @@
+import pygame
+
 WIDTH = 800
 HEIGHT = 600
 
@@ -10,4 +12,6 @@ objects = {"Normal Fish": ["Your average fish.", 2, "Fish", "NONE"],
 }
 # each array is [string descriptor, value, category, effects]
 storeRects = [[0, 0, WIDTH, HEIGHT], [WIDTH - 50, 0, 50, 50]] # topleft x, y, w, h
-scenes = [[[], [], []], []] # Array of arrays containing arrays denoting the different scenes in the different phases.
+scenes = [[[[], []], [], []], []] # Array of arrays containing arrays containing "tuples" in the format [Rectangle, string] denoting the different scenes in the different phases.
+
+objectImages = {"player" : player.image.load("")}
