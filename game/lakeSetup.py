@@ -8,7 +8,7 @@ class Lake:
         self.playerRef = playerRef
         self.proximConst = 10
     
-    def checkProximity(self):
+    def checkProximity(self, player):
         dx = [1, 0, -1, 0]
         dy = [0, 1, 0, -1]
         # b4 we check anything determine the lines that are the sides of the object.
