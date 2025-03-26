@@ -5,7 +5,6 @@ class Lake:
         self.position = [0, 0]
         self.blocks = [] # -> Array<Rect r>
         self.blockPos = {} # -> Array<int x, int y> a : True
-        self.playerRef = playerRef
         self.proximConst = 10
     
     def checkProximity(self, player):
