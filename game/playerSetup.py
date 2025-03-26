@@ -1,5 +1,10 @@
 import pygame
 
+class LinkedList:
+    def __init__(self, next = None, prev = None):
+        self.next = next
+        self.prev = prev
+
 class Player:
     def __init__(self):
         self.v = [0, 0]
